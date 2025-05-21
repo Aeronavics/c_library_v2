@@ -5,7 +5,9 @@
 
 
 typedef struct __mavlink_anv_msg_spray_status_t {
- double sprayed_volume; /*<  Volume Sprayed*/
+ double total_sprayed_volume; /*<  Total Volume Sprayed*/
+ double armed_sprayed_volume; /*<  Armed Volume Sprayed*/
+ double last_tree_volume; /*<  Last Tree Volume*/
  double spray_remaining; /*<  Spray Remaining*/
  uint16_t measured_flowrate; /*<  Measured Flowrate*/
  uint16_t desired_flowrate; /*<  Desired Flowrate*/
@@ -13,13 +15,13 @@ typedef struct __mavlink_anv_msg_spray_status_t {
  uint8_t error; /*<  Spray Error*/
 } mavlink_anv_msg_spray_status_t;
 
-#define MAVLINK_MSG_ID_ANV_MSG_SPRAY_STATUS_LEN 23
-#define MAVLINK_MSG_ID_ANV_MSG_SPRAY_STATUS_MIN_LEN 23
-#define MAVLINK_MSG_ID_5017_LEN 23
-#define MAVLINK_MSG_ID_5017_MIN_LEN 23
+#define MAVLINK_MSG_ID_ANV_MSG_SPRAY_STATUS_LEN 39
+#define MAVLINK_MSG_ID_ANV_MSG_SPRAY_STATUS_MIN_LEN 39
+#define MAVLINK_MSG_ID_5017_LEN 39
+#define MAVLINK_MSG_ID_5017_MIN_LEN 39
 
-#define MAVLINK_MSG_ID_ANV_MSG_SPRAY_STATUS_CRC 2
-#define MAVLINK_MSG_ID_5017_CRC 2
+#define MAVLINK_MSG_ID_ANV_MSG_SPRAY_STATUS_CRC 170
+#define MAVLINK_MSG_ID_5017_CRC 170
 
 
 
@@ -27,25 +29,29 @@ typedef struct __mavlink_anv_msg_spray_status_t {
 #define MAVLINK_MESSAGE_INFO_ANV_MSG_SPRAY_STATUS { \
     5017, \
     "ANV_MSG_SPRAY_STATUS", \
-    6, \
-    {  { "measured_flowrate", NULL, MAVLINK_TYPE_UINT16_T, 0, 16, offsetof(mavlink_anv_msg_spray_status_t, measured_flowrate) }, \
-         { "desired_flowrate", NULL, MAVLINK_TYPE_UINT16_T, 0, 18, offsetof(mavlink_anv_msg_spray_status_t, desired_flowrate) }, \
-         { "sprayed_volume", NULL, MAVLINK_TYPE_DOUBLE, 0, 0, offsetof(mavlink_anv_msg_spray_status_t, sprayed_volume) }, \
-         { "spray_remaining", NULL, MAVLINK_TYPE_DOUBLE, 0, 8, offsetof(mavlink_anv_msg_spray_status_t, spray_remaining) }, \
-         { "pressure", NULL, MAVLINK_TYPE_UINT16_T, 0, 20, offsetof(mavlink_anv_msg_spray_status_t, pressure) }, \
-         { "error", NULL, MAVLINK_TYPE_UINT8_T, 0, 22, offsetof(mavlink_anv_msg_spray_status_t, error) }, \
+    8, \
+    {  { "measured_flowrate", NULL, MAVLINK_TYPE_UINT16_T, 0, 32, offsetof(mavlink_anv_msg_spray_status_t, measured_flowrate) }, \
+         { "desired_flowrate", NULL, MAVLINK_TYPE_UINT16_T, 0, 34, offsetof(mavlink_anv_msg_spray_status_t, desired_flowrate) }, \
+         { "total_sprayed_volume", NULL, MAVLINK_TYPE_DOUBLE, 0, 0, offsetof(mavlink_anv_msg_spray_status_t, total_sprayed_volume) }, \
+         { "armed_sprayed_volume", NULL, MAVLINK_TYPE_DOUBLE, 0, 8, offsetof(mavlink_anv_msg_spray_status_t, armed_sprayed_volume) }, \
+         { "last_tree_volume", NULL, MAVLINK_TYPE_DOUBLE, 0, 16, offsetof(mavlink_anv_msg_spray_status_t, last_tree_volume) }, \
+         { "spray_remaining", NULL, MAVLINK_TYPE_DOUBLE, 0, 24, offsetof(mavlink_anv_msg_spray_status_t, spray_remaining) }, \
+         { "pressure", NULL, MAVLINK_TYPE_UINT16_T, 0, 36, offsetof(mavlink_anv_msg_spray_status_t, pressure) }, \
+         { "error", NULL, MAVLINK_TYPE_UINT8_T, 0, 38, offsetof(mavlink_anv_msg_spray_status_t, error) }, \
          } \
 }
 #else
 #define MAVLINK_MESSAGE_INFO_ANV_MSG_SPRAY_STATUS { \
     "ANV_MSG_SPRAY_STATUS", \
-    6, \
-    {  { "measured_flowrate", NULL, MAVLINK_TYPE_UINT16_T, 0, 16, offsetof(mavlink_anv_msg_spray_status_t, measured_flowrate) }, \
-         { "desired_flowrate", NULL, MAVLINK_TYPE_UINT16_T, 0, 18, offsetof(mavlink_anv_msg_spray_status_t, desired_flowrate) }, \
-         { "sprayed_volume", NULL, MAVLINK_TYPE_DOUBLE, 0, 0, offsetof(mavlink_anv_msg_spray_status_t, sprayed_volume) }, \
-         { "spray_remaining", NULL, MAVLINK_TYPE_DOUBLE, 0, 8, offsetof(mavlink_anv_msg_spray_status_t, spray_remaining) }, \
-         { "pressure", NULL, MAVLINK_TYPE_UINT16_T, 0, 20, offsetof(mavlink_anv_msg_spray_status_t, pressure) }, \
-         { "error", NULL, MAVLINK_TYPE_UINT8_T, 0, 22, offsetof(mavlink_anv_msg_spray_status_t, error) }, \
+    8, \
+    {  { "measured_flowrate", NULL, MAVLINK_TYPE_UINT16_T, 0, 32, offsetof(mavlink_anv_msg_spray_status_t, measured_flowrate) }, \
+         { "desired_flowrate", NULL, MAVLINK_TYPE_UINT16_T, 0, 34, offsetof(mavlink_anv_msg_spray_status_t, desired_flowrate) }, \
+         { "total_sprayed_volume", NULL, MAVLINK_TYPE_DOUBLE, 0, 0, offsetof(mavlink_anv_msg_spray_status_t, total_sprayed_volume) }, \
+         { "armed_sprayed_volume", NULL, MAVLINK_TYPE_DOUBLE, 0, 8, offsetof(mavlink_anv_msg_spray_status_t, armed_sprayed_volume) }, \
+         { "last_tree_volume", NULL, MAVLINK_TYPE_DOUBLE, 0, 16, offsetof(mavlink_anv_msg_spray_status_t, last_tree_volume) }, \
+         { "spray_remaining", NULL, MAVLINK_TYPE_DOUBLE, 0, 24, offsetof(mavlink_anv_msg_spray_status_t, spray_remaining) }, \
+         { "pressure", NULL, MAVLINK_TYPE_UINT16_T, 0, 36, offsetof(mavlink_anv_msg_spray_status_t, pressure) }, \
+         { "error", NULL, MAVLINK_TYPE_UINT8_T, 0, 38, offsetof(mavlink_anv_msg_spray_status_t, error) }, \
          } \
 }
 #endif
@@ -58,28 +64,34 @@ typedef struct __mavlink_anv_msg_spray_status_t {
  *
  * @param measured_flowrate  Measured Flowrate
  * @param desired_flowrate  Desired Flowrate
- * @param sprayed_volume  Volume Sprayed
+ * @param total_sprayed_volume  Total Volume Sprayed
+ * @param armed_sprayed_volume  Armed Volume Sprayed
+ * @param last_tree_volume  Last Tree Volume
  * @param spray_remaining  Spray Remaining
  * @param pressure  Measured Pressure
  * @param error  Spray Error
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_anv_msg_spray_status_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg,
-                               uint16_t measured_flowrate, uint16_t desired_flowrate, double sprayed_volume, double spray_remaining, uint16_t pressure, uint8_t error)
+                               uint16_t measured_flowrate, uint16_t desired_flowrate, double total_sprayed_volume, double armed_sprayed_volume, double last_tree_volume, double spray_remaining, uint16_t pressure, uint8_t error)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_ANV_MSG_SPRAY_STATUS_LEN];
-    _mav_put_double(buf, 0, sprayed_volume);
-    _mav_put_double(buf, 8, spray_remaining);
-    _mav_put_uint16_t(buf, 16, measured_flowrate);
-    _mav_put_uint16_t(buf, 18, desired_flowrate);
-    _mav_put_uint16_t(buf, 20, pressure);
-    _mav_put_uint8_t(buf, 22, error);
+    _mav_put_double(buf, 0, total_sprayed_volume);
+    _mav_put_double(buf, 8, armed_sprayed_volume);
+    _mav_put_double(buf, 16, last_tree_volume);
+    _mav_put_double(buf, 24, spray_remaining);
+    _mav_put_uint16_t(buf, 32, measured_flowrate);
+    _mav_put_uint16_t(buf, 34, desired_flowrate);
+    _mav_put_uint16_t(buf, 36, pressure);
+    _mav_put_uint8_t(buf, 38, error);
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_ANV_MSG_SPRAY_STATUS_LEN);
 #else
     mavlink_anv_msg_spray_status_t packet;
-    packet.sprayed_volume = sprayed_volume;
+    packet.total_sprayed_volume = total_sprayed_volume;
+    packet.armed_sprayed_volume = armed_sprayed_volume;
+    packet.last_tree_volume = last_tree_volume;
     packet.spray_remaining = spray_remaining;
     packet.measured_flowrate = measured_flowrate;
     packet.desired_flowrate = desired_flowrate;
@@ -102,28 +114,34 @@ static inline uint16_t mavlink_msg_anv_msg_spray_status_pack(uint8_t system_id, 
  *
  * @param measured_flowrate  Measured Flowrate
  * @param desired_flowrate  Desired Flowrate
- * @param sprayed_volume  Volume Sprayed
+ * @param total_sprayed_volume  Total Volume Sprayed
+ * @param armed_sprayed_volume  Armed Volume Sprayed
+ * @param last_tree_volume  Last Tree Volume
  * @param spray_remaining  Spray Remaining
  * @param pressure  Measured Pressure
  * @param error  Spray Error
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_anv_msg_spray_status_pack_status(uint8_t system_id, uint8_t component_id, mavlink_status_t *_status, mavlink_message_t* msg,
-                               uint16_t measured_flowrate, uint16_t desired_flowrate, double sprayed_volume, double spray_remaining, uint16_t pressure, uint8_t error)
+                               uint16_t measured_flowrate, uint16_t desired_flowrate, double total_sprayed_volume, double armed_sprayed_volume, double last_tree_volume, double spray_remaining, uint16_t pressure, uint8_t error)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_ANV_MSG_SPRAY_STATUS_LEN];
-    _mav_put_double(buf, 0, sprayed_volume);
-    _mav_put_double(buf, 8, spray_remaining);
-    _mav_put_uint16_t(buf, 16, measured_flowrate);
-    _mav_put_uint16_t(buf, 18, desired_flowrate);
-    _mav_put_uint16_t(buf, 20, pressure);
-    _mav_put_uint8_t(buf, 22, error);
+    _mav_put_double(buf, 0, total_sprayed_volume);
+    _mav_put_double(buf, 8, armed_sprayed_volume);
+    _mav_put_double(buf, 16, last_tree_volume);
+    _mav_put_double(buf, 24, spray_remaining);
+    _mav_put_uint16_t(buf, 32, measured_flowrate);
+    _mav_put_uint16_t(buf, 34, desired_flowrate);
+    _mav_put_uint16_t(buf, 36, pressure);
+    _mav_put_uint8_t(buf, 38, error);
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_ANV_MSG_SPRAY_STATUS_LEN);
 #else
     mavlink_anv_msg_spray_status_t packet;
-    packet.sprayed_volume = sprayed_volume;
+    packet.total_sprayed_volume = total_sprayed_volume;
+    packet.armed_sprayed_volume = armed_sprayed_volume;
+    packet.last_tree_volume = last_tree_volume;
     packet.spray_remaining = spray_remaining;
     packet.measured_flowrate = measured_flowrate;
     packet.desired_flowrate = desired_flowrate;
@@ -149,7 +167,9 @@ static inline uint16_t mavlink_msg_anv_msg_spray_status_pack_status(uint8_t syst
  * @param msg The MAVLink message to compress the data into
  * @param measured_flowrate  Measured Flowrate
  * @param desired_flowrate  Desired Flowrate
- * @param sprayed_volume  Volume Sprayed
+ * @param total_sprayed_volume  Total Volume Sprayed
+ * @param armed_sprayed_volume  Armed Volume Sprayed
+ * @param last_tree_volume  Last Tree Volume
  * @param spray_remaining  Spray Remaining
  * @param pressure  Measured Pressure
  * @param error  Spray Error
@@ -157,21 +177,25 @@ static inline uint16_t mavlink_msg_anv_msg_spray_status_pack_status(uint8_t syst
  */
 static inline uint16_t mavlink_msg_anv_msg_spray_status_pack_chan(uint8_t system_id, uint8_t component_id, uint8_t chan,
                                mavlink_message_t* msg,
-                                   uint16_t measured_flowrate,uint16_t desired_flowrate,double sprayed_volume,double spray_remaining,uint16_t pressure,uint8_t error)
+                                   uint16_t measured_flowrate,uint16_t desired_flowrate,double total_sprayed_volume,double armed_sprayed_volume,double last_tree_volume,double spray_remaining,uint16_t pressure,uint8_t error)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_ANV_MSG_SPRAY_STATUS_LEN];
-    _mav_put_double(buf, 0, sprayed_volume);
-    _mav_put_double(buf, 8, spray_remaining);
-    _mav_put_uint16_t(buf, 16, measured_flowrate);
-    _mav_put_uint16_t(buf, 18, desired_flowrate);
-    _mav_put_uint16_t(buf, 20, pressure);
-    _mav_put_uint8_t(buf, 22, error);
+    _mav_put_double(buf, 0, total_sprayed_volume);
+    _mav_put_double(buf, 8, armed_sprayed_volume);
+    _mav_put_double(buf, 16, last_tree_volume);
+    _mav_put_double(buf, 24, spray_remaining);
+    _mav_put_uint16_t(buf, 32, measured_flowrate);
+    _mav_put_uint16_t(buf, 34, desired_flowrate);
+    _mav_put_uint16_t(buf, 36, pressure);
+    _mav_put_uint8_t(buf, 38, error);
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_ANV_MSG_SPRAY_STATUS_LEN);
 #else
     mavlink_anv_msg_spray_status_t packet;
-    packet.sprayed_volume = sprayed_volume;
+    packet.total_sprayed_volume = total_sprayed_volume;
+    packet.armed_sprayed_volume = armed_sprayed_volume;
+    packet.last_tree_volume = last_tree_volume;
     packet.spray_remaining = spray_remaining;
     packet.measured_flowrate = measured_flowrate;
     packet.desired_flowrate = desired_flowrate;
@@ -195,7 +219,7 @@ static inline uint16_t mavlink_msg_anv_msg_spray_status_pack_chan(uint8_t system
  */
 static inline uint16_t mavlink_msg_anv_msg_spray_status_encode(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg, const mavlink_anv_msg_spray_status_t* anv_msg_spray_status)
 {
-    return mavlink_msg_anv_msg_spray_status_pack(system_id, component_id, msg, anv_msg_spray_status->measured_flowrate, anv_msg_spray_status->desired_flowrate, anv_msg_spray_status->sprayed_volume, anv_msg_spray_status->spray_remaining, anv_msg_spray_status->pressure, anv_msg_spray_status->error);
+    return mavlink_msg_anv_msg_spray_status_pack(system_id, component_id, msg, anv_msg_spray_status->measured_flowrate, anv_msg_spray_status->desired_flowrate, anv_msg_spray_status->total_sprayed_volume, anv_msg_spray_status->armed_sprayed_volume, anv_msg_spray_status->last_tree_volume, anv_msg_spray_status->spray_remaining, anv_msg_spray_status->pressure, anv_msg_spray_status->error);
 }
 
 /**
@@ -209,7 +233,7 @@ static inline uint16_t mavlink_msg_anv_msg_spray_status_encode(uint8_t system_id
  */
 static inline uint16_t mavlink_msg_anv_msg_spray_status_encode_chan(uint8_t system_id, uint8_t component_id, uint8_t chan, mavlink_message_t* msg, const mavlink_anv_msg_spray_status_t* anv_msg_spray_status)
 {
-    return mavlink_msg_anv_msg_spray_status_pack_chan(system_id, component_id, chan, msg, anv_msg_spray_status->measured_flowrate, anv_msg_spray_status->desired_flowrate, anv_msg_spray_status->sprayed_volume, anv_msg_spray_status->spray_remaining, anv_msg_spray_status->pressure, anv_msg_spray_status->error);
+    return mavlink_msg_anv_msg_spray_status_pack_chan(system_id, component_id, chan, msg, anv_msg_spray_status->measured_flowrate, anv_msg_spray_status->desired_flowrate, anv_msg_spray_status->total_sprayed_volume, anv_msg_spray_status->armed_sprayed_volume, anv_msg_spray_status->last_tree_volume, anv_msg_spray_status->spray_remaining, anv_msg_spray_status->pressure, anv_msg_spray_status->error);
 }
 
 /**
@@ -223,7 +247,7 @@ static inline uint16_t mavlink_msg_anv_msg_spray_status_encode_chan(uint8_t syst
  */
 static inline uint16_t mavlink_msg_anv_msg_spray_status_encode_status(uint8_t system_id, uint8_t component_id, mavlink_status_t* _status, mavlink_message_t* msg, const mavlink_anv_msg_spray_status_t* anv_msg_spray_status)
 {
-    return mavlink_msg_anv_msg_spray_status_pack_status(system_id, component_id, _status, msg,  anv_msg_spray_status->measured_flowrate, anv_msg_spray_status->desired_flowrate, anv_msg_spray_status->sprayed_volume, anv_msg_spray_status->spray_remaining, anv_msg_spray_status->pressure, anv_msg_spray_status->error);
+    return mavlink_msg_anv_msg_spray_status_pack_status(system_id, component_id, _status, msg,  anv_msg_spray_status->measured_flowrate, anv_msg_spray_status->desired_flowrate, anv_msg_spray_status->total_sprayed_volume, anv_msg_spray_status->armed_sprayed_volume, anv_msg_spray_status->last_tree_volume, anv_msg_spray_status->spray_remaining, anv_msg_spray_status->pressure, anv_msg_spray_status->error);
 }
 
 /**
@@ -232,28 +256,34 @@ static inline uint16_t mavlink_msg_anv_msg_spray_status_encode_status(uint8_t sy
  *
  * @param measured_flowrate  Measured Flowrate
  * @param desired_flowrate  Desired Flowrate
- * @param sprayed_volume  Volume Sprayed
+ * @param total_sprayed_volume  Total Volume Sprayed
+ * @param armed_sprayed_volume  Armed Volume Sprayed
+ * @param last_tree_volume  Last Tree Volume
  * @param spray_remaining  Spray Remaining
  * @param pressure  Measured Pressure
  * @param error  Spray Error
  */
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
 
-static inline void mavlink_msg_anv_msg_spray_status_send(mavlink_channel_t chan, uint16_t measured_flowrate, uint16_t desired_flowrate, double sprayed_volume, double spray_remaining, uint16_t pressure, uint8_t error)
+static inline void mavlink_msg_anv_msg_spray_status_send(mavlink_channel_t chan, uint16_t measured_flowrate, uint16_t desired_flowrate, double total_sprayed_volume, double armed_sprayed_volume, double last_tree_volume, double spray_remaining, uint16_t pressure, uint8_t error)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_ANV_MSG_SPRAY_STATUS_LEN];
-    _mav_put_double(buf, 0, sprayed_volume);
-    _mav_put_double(buf, 8, spray_remaining);
-    _mav_put_uint16_t(buf, 16, measured_flowrate);
-    _mav_put_uint16_t(buf, 18, desired_flowrate);
-    _mav_put_uint16_t(buf, 20, pressure);
-    _mav_put_uint8_t(buf, 22, error);
+    _mav_put_double(buf, 0, total_sprayed_volume);
+    _mav_put_double(buf, 8, armed_sprayed_volume);
+    _mav_put_double(buf, 16, last_tree_volume);
+    _mav_put_double(buf, 24, spray_remaining);
+    _mav_put_uint16_t(buf, 32, measured_flowrate);
+    _mav_put_uint16_t(buf, 34, desired_flowrate);
+    _mav_put_uint16_t(buf, 36, pressure);
+    _mav_put_uint8_t(buf, 38, error);
 
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ANV_MSG_SPRAY_STATUS, buf, MAVLINK_MSG_ID_ANV_MSG_SPRAY_STATUS_MIN_LEN, MAVLINK_MSG_ID_ANV_MSG_SPRAY_STATUS_LEN, MAVLINK_MSG_ID_ANV_MSG_SPRAY_STATUS_CRC);
 #else
     mavlink_anv_msg_spray_status_t packet;
-    packet.sprayed_volume = sprayed_volume;
+    packet.total_sprayed_volume = total_sprayed_volume;
+    packet.armed_sprayed_volume = armed_sprayed_volume;
+    packet.last_tree_volume = last_tree_volume;
     packet.spray_remaining = spray_remaining;
     packet.measured_flowrate = measured_flowrate;
     packet.desired_flowrate = desired_flowrate;
@@ -272,7 +302,7 @@ static inline void mavlink_msg_anv_msg_spray_status_send(mavlink_channel_t chan,
 static inline void mavlink_msg_anv_msg_spray_status_send_struct(mavlink_channel_t chan, const mavlink_anv_msg_spray_status_t* anv_msg_spray_status)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
-    mavlink_msg_anv_msg_spray_status_send(chan, anv_msg_spray_status->measured_flowrate, anv_msg_spray_status->desired_flowrate, anv_msg_spray_status->sprayed_volume, anv_msg_spray_status->spray_remaining, anv_msg_spray_status->pressure, anv_msg_spray_status->error);
+    mavlink_msg_anv_msg_spray_status_send(chan, anv_msg_spray_status->measured_flowrate, anv_msg_spray_status->desired_flowrate, anv_msg_spray_status->total_sprayed_volume, anv_msg_spray_status->armed_sprayed_volume, anv_msg_spray_status->last_tree_volume, anv_msg_spray_status->spray_remaining, anv_msg_spray_status->pressure, anv_msg_spray_status->error);
 #else
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ANV_MSG_SPRAY_STATUS, (const char *)anv_msg_spray_status, MAVLINK_MSG_ID_ANV_MSG_SPRAY_STATUS_MIN_LEN, MAVLINK_MSG_ID_ANV_MSG_SPRAY_STATUS_LEN, MAVLINK_MSG_ID_ANV_MSG_SPRAY_STATUS_CRC);
 #endif
@@ -286,21 +316,25 @@ static inline void mavlink_msg_anv_msg_spray_status_send_struct(mavlink_channel_
   is usually the receive buffer for the channel, and allows a reply to an
   incoming message with minimum stack space usage.
  */
-static inline void mavlink_msg_anv_msg_spray_status_send_buf(mavlink_message_t *msgbuf, mavlink_channel_t chan,  uint16_t measured_flowrate, uint16_t desired_flowrate, double sprayed_volume, double spray_remaining, uint16_t pressure, uint8_t error)
+static inline void mavlink_msg_anv_msg_spray_status_send_buf(mavlink_message_t *msgbuf, mavlink_channel_t chan,  uint16_t measured_flowrate, uint16_t desired_flowrate, double total_sprayed_volume, double armed_sprayed_volume, double last_tree_volume, double spray_remaining, uint16_t pressure, uint8_t error)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char *buf = (char *)msgbuf;
-    _mav_put_double(buf, 0, sprayed_volume);
-    _mav_put_double(buf, 8, spray_remaining);
-    _mav_put_uint16_t(buf, 16, measured_flowrate);
-    _mav_put_uint16_t(buf, 18, desired_flowrate);
-    _mav_put_uint16_t(buf, 20, pressure);
-    _mav_put_uint8_t(buf, 22, error);
+    _mav_put_double(buf, 0, total_sprayed_volume);
+    _mav_put_double(buf, 8, armed_sprayed_volume);
+    _mav_put_double(buf, 16, last_tree_volume);
+    _mav_put_double(buf, 24, spray_remaining);
+    _mav_put_uint16_t(buf, 32, measured_flowrate);
+    _mav_put_uint16_t(buf, 34, desired_flowrate);
+    _mav_put_uint16_t(buf, 36, pressure);
+    _mav_put_uint8_t(buf, 38, error);
 
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ANV_MSG_SPRAY_STATUS, buf, MAVLINK_MSG_ID_ANV_MSG_SPRAY_STATUS_MIN_LEN, MAVLINK_MSG_ID_ANV_MSG_SPRAY_STATUS_LEN, MAVLINK_MSG_ID_ANV_MSG_SPRAY_STATUS_CRC);
 #else
     mavlink_anv_msg_spray_status_t *packet = (mavlink_anv_msg_spray_status_t *)msgbuf;
-    packet->sprayed_volume = sprayed_volume;
+    packet->total_sprayed_volume = total_sprayed_volume;
+    packet->armed_sprayed_volume = armed_sprayed_volume;
+    packet->last_tree_volume = last_tree_volume;
     packet->spray_remaining = spray_remaining;
     packet->measured_flowrate = measured_flowrate;
     packet->desired_flowrate = desired_flowrate;
@@ -324,7 +358,7 @@ static inline void mavlink_msg_anv_msg_spray_status_send_buf(mavlink_message_t *
  */
 static inline uint16_t mavlink_msg_anv_msg_spray_status_get_measured_flowrate(const mavlink_message_t* msg)
 {
-    return _MAV_RETURN_uint16_t(msg,  16);
+    return _MAV_RETURN_uint16_t(msg,  32);
 }
 
 /**
@@ -334,17 +368,37 @@ static inline uint16_t mavlink_msg_anv_msg_spray_status_get_measured_flowrate(co
  */
 static inline uint16_t mavlink_msg_anv_msg_spray_status_get_desired_flowrate(const mavlink_message_t* msg)
 {
-    return _MAV_RETURN_uint16_t(msg,  18);
+    return _MAV_RETURN_uint16_t(msg,  34);
 }
 
 /**
- * @brief Get field sprayed_volume from anv_msg_spray_status message
+ * @brief Get field total_sprayed_volume from anv_msg_spray_status message
  *
- * @return  Volume Sprayed
+ * @return  Total Volume Sprayed
  */
-static inline double mavlink_msg_anv_msg_spray_status_get_sprayed_volume(const mavlink_message_t* msg)
+static inline double mavlink_msg_anv_msg_spray_status_get_total_sprayed_volume(const mavlink_message_t* msg)
 {
     return _MAV_RETURN_double(msg,  0);
+}
+
+/**
+ * @brief Get field armed_sprayed_volume from anv_msg_spray_status message
+ *
+ * @return  Armed Volume Sprayed
+ */
+static inline double mavlink_msg_anv_msg_spray_status_get_armed_sprayed_volume(const mavlink_message_t* msg)
+{
+    return _MAV_RETURN_double(msg,  8);
+}
+
+/**
+ * @brief Get field last_tree_volume from anv_msg_spray_status message
+ *
+ * @return  Last Tree Volume
+ */
+static inline double mavlink_msg_anv_msg_spray_status_get_last_tree_volume(const mavlink_message_t* msg)
+{
+    return _MAV_RETURN_double(msg,  16);
 }
 
 /**
@@ -354,7 +408,7 @@ static inline double mavlink_msg_anv_msg_spray_status_get_sprayed_volume(const m
  */
 static inline double mavlink_msg_anv_msg_spray_status_get_spray_remaining(const mavlink_message_t* msg)
 {
-    return _MAV_RETURN_double(msg,  8);
+    return _MAV_RETURN_double(msg,  24);
 }
 
 /**
@@ -364,7 +418,7 @@ static inline double mavlink_msg_anv_msg_spray_status_get_spray_remaining(const 
  */
 static inline uint16_t mavlink_msg_anv_msg_spray_status_get_pressure(const mavlink_message_t* msg)
 {
-    return _MAV_RETURN_uint16_t(msg,  20);
+    return _MAV_RETURN_uint16_t(msg,  36);
 }
 
 /**
@@ -374,7 +428,7 @@ static inline uint16_t mavlink_msg_anv_msg_spray_status_get_pressure(const mavli
  */
 static inline uint8_t mavlink_msg_anv_msg_spray_status_get_error(const mavlink_message_t* msg)
 {
-    return _MAV_RETURN_uint8_t(msg,  22);
+    return _MAV_RETURN_uint8_t(msg,  38);
 }
 
 /**
@@ -386,7 +440,9 @@ static inline uint8_t mavlink_msg_anv_msg_spray_status_get_error(const mavlink_m
 static inline void mavlink_msg_anv_msg_spray_status_decode(const mavlink_message_t* msg, mavlink_anv_msg_spray_status_t* anv_msg_spray_status)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
-    anv_msg_spray_status->sprayed_volume = mavlink_msg_anv_msg_spray_status_get_sprayed_volume(msg);
+    anv_msg_spray_status->total_sprayed_volume = mavlink_msg_anv_msg_spray_status_get_total_sprayed_volume(msg);
+    anv_msg_spray_status->armed_sprayed_volume = mavlink_msg_anv_msg_spray_status_get_armed_sprayed_volume(msg);
+    anv_msg_spray_status->last_tree_volume = mavlink_msg_anv_msg_spray_status_get_last_tree_volume(msg);
     anv_msg_spray_status->spray_remaining = mavlink_msg_anv_msg_spray_status_get_spray_remaining(msg);
     anv_msg_spray_status->measured_flowrate = mavlink_msg_anv_msg_spray_status_get_measured_flowrate(msg);
     anv_msg_spray_status->desired_flowrate = mavlink_msg_anv_msg_spray_status_get_desired_flowrate(msg);

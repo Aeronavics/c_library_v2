@@ -12,17 +12,35 @@ extern "C" {
 
 #ifndef MAVLINK_TEST_ALL
 #define MAVLINK_TEST_ALL
-
+static void mavlink_test_ardupilotmega(uint8_t, uint8_t, mavlink_message_t *last_msg);
+static void mavlink_test_uAvionix(uint8_t, uint8_t, mavlink_message_t *last_msg);
+static void mavlink_test_icarous(uint8_t, uint8_t, mavlink_message_t *last_msg);
+static void mavlink_test_common(uint8_t, uint8_t, mavlink_message_t *last_msg);
+static void mavlink_test_storm32(uint8_t, uint8_t, mavlink_message_t *last_msg);
+static void mavlink_test_ASLUAV(uint8_t, uint8_t, mavlink_message_t *last_msg);
+static void mavlink_test_cubepilot(uint8_t, uint8_t, mavlink_message_t *last_msg);
 static void mavlink_test_aeronavics(uint8_t, uint8_t, mavlink_message_t *last_msg);
 
 static void mavlink_test_all(uint8_t system_id, uint8_t component_id, mavlink_message_t *last_msg)
 {
-
+    mavlink_test_ardupilotmega(system_id, component_id, last_msg);
+    mavlink_test_uAvionix(system_id, component_id, last_msg);
+    mavlink_test_icarous(system_id, component_id, last_msg);
+    mavlink_test_common(system_id, component_id, last_msg);
+    mavlink_test_storm32(system_id, component_id, last_msg);
+    mavlink_test_ASLUAV(system_id, component_id, last_msg);
+    mavlink_test_cubepilot(system_id, component_id, last_msg);
     mavlink_test_aeronavics(system_id, component_id, last_msg);
 }
 #endif
 
-
+#include "../ardupilotmega/testsuite.h"
+#include "../uAvionix/testsuite.h"
+#include "../icarous/testsuite.h"
+#include "../common/testsuite.h"
+#include "../storm32/testsuite.h"
+#include "../ASLUAV/testsuite.h"
+#include "../cubepilot/testsuite.h"
 
 
 static void mavlink_test_piksi_msg_obs(uint8_t system_id, uint8_t component_id, mavlink_message_t *last_msg)
@@ -1042,11 +1060,13 @@ static void mavlink_test_anv_msg_spray_status(uint8_t system_id, uint8_t compone
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         uint16_t i;
     mavlink_anv_msg_spray_status_t packet_in = {
-        123.0,179.0,18067,18171,18275,199
+        123.0,179.0,235.0,291.0,18899,19003,19107,247
     };
     mavlink_anv_msg_spray_status_t packet1, packet2;
         memset(&packet1, 0, sizeof(packet1));
-        packet1.sprayed_volume = packet_in.sprayed_volume;
+        packet1.total_sprayed_volume = packet_in.total_sprayed_volume;
+        packet1.armed_sprayed_volume = packet_in.armed_sprayed_volume;
+        packet1.last_tree_volume = packet_in.last_tree_volume;
         packet1.spray_remaining = packet_in.spray_remaining;
         packet1.measured_flowrate = packet_in.measured_flowrate;
         packet1.desired_flowrate = packet_in.desired_flowrate;
@@ -1066,12 +1086,12 @@ static void mavlink_test_anv_msg_spray_status(uint8_t system_id, uint8_t compone
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_anv_msg_spray_status_pack(system_id, component_id, &msg , packet1.measured_flowrate , packet1.desired_flowrate , packet1.sprayed_volume , packet1.spray_remaining , packet1.pressure , packet1.error );
+    mavlink_msg_anv_msg_spray_status_pack(system_id, component_id, &msg , packet1.measured_flowrate , packet1.desired_flowrate , packet1.total_sprayed_volume , packet1.armed_sprayed_volume , packet1.last_tree_volume , packet1.spray_remaining , packet1.pressure , packet1.error );
     mavlink_msg_anv_msg_spray_status_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_anv_msg_spray_status_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.measured_flowrate , packet1.desired_flowrate , packet1.sprayed_volume , packet1.spray_remaining , packet1.pressure , packet1.error );
+    mavlink_msg_anv_msg_spray_status_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.measured_flowrate , packet1.desired_flowrate , packet1.total_sprayed_volume , packet1.armed_sprayed_volume , packet1.last_tree_volume , packet1.spray_remaining , packet1.pressure , packet1.error );
     mavlink_msg_anv_msg_spray_status_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
@@ -1084,7 +1104,7 @@ static void mavlink_test_anv_msg_spray_status(uint8_t system_id, uint8_t compone
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
         
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_anv_msg_spray_status_send(MAVLINK_COMM_1 , packet1.measured_flowrate , packet1.desired_flowrate , packet1.sprayed_volume , packet1.spray_remaining , packet1.pressure , packet1.error );
+    mavlink_msg_anv_msg_spray_status_send(MAVLINK_COMM_1 , packet1.measured_flowrate , packet1.desired_flowrate , packet1.total_sprayed_volume , packet1.armed_sprayed_volume , packet1.last_tree_volume , packet1.spray_remaining , packet1.pressure , packet1.error );
     mavlink_msg_anv_msg_spray_status_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
