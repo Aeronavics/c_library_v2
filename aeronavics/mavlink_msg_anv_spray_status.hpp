@@ -13,14 +13,15 @@ namespace msg {
  */
 struct ANV_SPRAY_STATUS : mavlink::Message {
     static constexpr msgid_t MSG_ID = 5017;
-    static constexpr size_t LENGTH = 39;
-    static constexpr size_t MIN_LENGTH = 39;
-    static constexpr uint8_t CRC_EXTRA = 240;
+    static constexpr size_t LENGTH = 41;
+    static constexpr size_t MIN_LENGTH = 41;
+    static constexpr uint8_t CRC_EXTRA = 49;
     static constexpr auto NAME = "ANV_SPRAY_STATUS";
 
 
     uint16_t measured_flowrate; /*<  Measured Flowrate */
     uint16_t desired_flowrate; /*<  Desired Flowrate */
+    uint16_t set_flowrate; /*<  Set Flowrate */
     double total_sprayed_volume; /*<  Total Volume Sprayed */
     double armed_sprayed_volume; /*<  Armed Volume Sprayed */
     double last_tree_volume; /*<  Last Tree Volume */
@@ -46,6 +47,7 @@ struct ANV_SPRAY_STATUS : mavlink::Message {
         ss << NAME << ":" << std::endl;
         ss << "  measured_flowrate: " << measured_flowrate << std::endl;
         ss << "  desired_flowrate: " << desired_flowrate << std::endl;
+        ss << "  set_flowrate: " << set_flowrate << std::endl;
         ss << "  total_sprayed_volume: " << total_sprayed_volume << std::endl;
         ss << "  armed_sprayed_volume: " << armed_sprayed_volume << std::endl;
         ss << "  last_tree_volume: " << last_tree_volume << std::endl;
@@ -66,8 +68,9 @@ struct ANV_SPRAY_STATUS : mavlink::Message {
         map << spray_remaining;               // offset: 24
         map << measured_flowrate;             // offset: 32
         map << desired_flowrate;              // offset: 34
-        map << pressure;                      // offset: 36
-        map << error;                         // offset: 38
+        map << set_flowrate;                  // offset: 36
+        map << pressure;                      // offset: 38
+        map << error;                         // offset: 40
     }
 
     inline void deserialize(mavlink::MsgMap &map) override
@@ -78,8 +81,9 @@ struct ANV_SPRAY_STATUS : mavlink::Message {
         map >> spray_remaining;               // offset: 24
         map >> measured_flowrate;             // offset: 32
         map >> desired_flowrate;              // offset: 34
-        map >> pressure;                      // offset: 36
-        map >> error;                         // offset: 38
+        map >> set_flowrate;                  // offset: 36
+        map >> pressure;                      // offset: 38
+        map >> error;                         // offset: 40
     }
 };
 

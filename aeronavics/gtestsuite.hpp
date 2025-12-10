@@ -820,12 +820,13 @@ TEST(aeronavics, ANV_SPRAY_STATUS)
     mavlink::aeronavics::msg::ANV_SPRAY_STATUS packet_in{};
     packet_in.measured_flowrate = 18899;
     packet_in.desired_flowrate = 19003;
+    packet_in.set_flowrate = 19107;
     packet_in.total_sprayed_volume = 123.0;
     packet_in.armed_sprayed_volume = 179.0;
     packet_in.last_tree_volume = 235.0;
     packet_in.spray_remaining = 291.0;
-    packet_in.pressure = 19107;
-    packet_in.error = 247;
+    packet_in.pressure = 19211;
+    packet_in.error = 125;
 
     mavlink::aeronavics::msg::ANV_SPRAY_STATUS packet1{};
     mavlink::aeronavics::msg::ANV_SPRAY_STATUS packet2{};
@@ -842,6 +843,7 @@ TEST(aeronavics, ANV_SPRAY_STATUS)
 
     EXPECT_EQ(packet1.measured_flowrate, packet2.measured_flowrate);
     EXPECT_EQ(packet1.desired_flowrate, packet2.desired_flowrate);
+    EXPECT_EQ(packet1.set_flowrate, packet2.set_flowrate);
     EXPECT_EQ(packet1.total_sprayed_volume, packet2.total_sprayed_volume);
     EXPECT_EQ(packet1.armed_sprayed_volume, packet2.armed_sprayed_volume);
     EXPECT_EQ(packet1.last_tree_volume, packet2.last_tree_volume);
@@ -859,18 +861,19 @@ TEST(aeronavics_interop, ANV_SPRAY_STATUS)
     memset(&msg, 0, sizeof(msg));
 
     mavlink_anv_spray_status_t packet_c {
-         123.0, 179.0, 235.0, 291.0, 18899, 19003, 19107, 247
+         123.0, 179.0, 235.0, 291.0, 18899, 19003, 19107, 19211, 125
     };
 
     mavlink::aeronavics::msg::ANV_SPRAY_STATUS packet_in{};
     packet_in.measured_flowrate = 18899;
     packet_in.desired_flowrate = 19003;
+    packet_in.set_flowrate = 19107;
     packet_in.total_sprayed_volume = 123.0;
     packet_in.armed_sprayed_volume = 179.0;
     packet_in.last_tree_volume = 235.0;
     packet_in.spray_remaining = 291.0;
-    packet_in.pressure = 19107;
-    packet_in.error = 247;
+    packet_in.pressure = 19211;
+    packet_in.error = 125;
 
     mavlink::aeronavics::msg::ANV_SPRAY_STATUS packet2{};
 
@@ -885,6 +888,7 @@ TEST(aeronavics_interop, ANV_SPRAY_STATUS)
 
     EXPECT_EQ(packet_in.measured_flowrate, packet2.measured_flowrate);
     EXPECT_EQ(packet_in.desired_flowrate, packet2.desired_flowrate);
+    EXPECT_EQ(packet_in.set_flowrate, packet2.set_flowrate);
     EXPECT_EQ(packet_in.total_sprayed_volume, packet2.total_sprayed_volume);
     EXPECT_EQ(packet_in.armed_sprayed_volume, packet2.armed_sprayed_volume);
     EXPECT_EQ(packet_in.last_tree_volume, packet2.last_tree_volume);
