@@ -112,6 +112,63 @@ static inline uint16_t mavlink_msg_anv_spray_status_pack(uint8_t system_id, uint
 }
 
 /**
+ * @brief Pack a anv_spray_status message
+ * @param system_id ID of this system
+ * @param component_id ID of this component (e.g. 200 for IMU)
+ * @param status MAVLink status structure
+ * @param msg The MAVLink message to compress the data into
+ *
+ * @param measured_flowrate  Measured Flowrate
+ * @param desired_flowrate  Desired Flowrate
+ * @param set_flowrate  Set Flowrate
+ * @param total_sprayed_volume  Total Volume Sprayed
+ * @param armed_sprayed_volume  Armed Volume Sprayed
+ * @param last_tree_volume  Last Tree Volume
+ * @param spray_remaining  Spray Remaining
+ * @param pressure  Measured Pressure
+ * @param error  Spray Error
+ * @return length of the message in bytes (excluding serial stream start sign)
+ */
+static inline uint16_t mavlink_msg_anv_spray_status_pack_status(uint8_t system_id, uint8_t component_id, mavlink_status_t *_status, mavlink_message_t* msg,
+                               uint16_t measured_flowrate, uint16_t desired_flowrate, uint16_t set_flowrate, double total_sprayed_volume, double armed_sprayed_volume, double last_tree_volume, double spray_remaining, uint16_t pressure, uint8_t error)
+{
+#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
+    char buf[MAVLINK_MSG_ID_ANV_SPRAY_STATUS_LEN];
+    _mav_put_double(buf, 0, total_sprayed_volume);
+    _mav_put_double(buf, 8, armed_sprayed_volume);
+    _mav_put_double(buf, 16, last_tree_volume);
+    _mav_put_double(buf, 24, spray_remaining);
+    _mav_put_uint16_t(buf, 32, measured_flowrate);
+    _mav_put_uint16_t(buf, 34, desired_flowrate);
+    _mav_put_uint16_t(buf, 36, set_flowrate);
+    _mav_put_uint16_t(buf, 38, pressure);
+    _mav_put_uint8_t(buf, 40, error);
+
+        memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_ANV_SPRAY_STATUS_LEN);
+#else
+    mavlink_anv_spray_status_t packet;
+    packet.total_sprayed_volume = total_sprayed_volume;
+    packet.armed_sprayed_volume = armed_sprayed_volume;
+    packet.last_tree_volume = last_tree_volume;
+    packet.spray_remaining = spray_remaining;
+    packet.measured_flowrate = measured_flowrate;
+    packet.desired_flowrate = desired_flowrate;
+    packet.set_flowrate = set_flowrate;
+    packet.pressure = pressure;
+    packet.error = error;
+
+        memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_ANV_SPRAY_STATUS_LEN);
+#endif
+
+    msg->msgid = MAVLINK_MSG_ID_ANV_SPRAY_STATUS;
+#if MAVLINK_CRC_EXTRA
+    return mavlink_finalize_message_buffer(msg, system_id, component_id, _status, MAVLINK_MSG_ID_ANV_SPRAY_STATUS_MIN_LEN, MAVLINK_MSG_ID_ANV_SPRAY_STATUS_LEN, MAVLINK_MSG_ID_ANV_SPRAY_STATUS_CRC);
+#else
+    return mavlink_finalize_message_buffer(msg, system_id, component_id, _status, MAVLINK_MSG_ID_ANV_SPRAY_STATUS_MIN_LEN, MAVLINK_MSG_ID_ANV_SPRAY_STATUS_LEN);
+#endif
+}
+
+/**
  * @brief Pack a anv_spray_status message on a channel
  * @param system_id ID of this system
  * @param component_id ID of this component (e.g. 200 for IMU)
@@ -189,6 +246,20 @@ static inline uint16_t mavlink_msg_anv_spray_status_encode(uint8_t system_id, ui
 static inline uint16_t mavlink_msg_anv_spray_status_encode_chan(uint8_t system_id, uint8_t component_id, uint8_t chan, mavlink_message_t* msg, const mavlink_anv_spray_status_t* anv_spray_status)
 {
     return mavlink_msg_anv_spray_status_pack_chan(system_id, component_id, chan, msg, anv_spray_status->measured_flowrate, anv_spray_status->desired_flowrate, anv_spray_status->set_flowrate, anv_spray_status->total_sprayed_volume, anv_spray_status->armed_sprayed_volume, anv_spray_status->last_tree_volume, anv_spray_status->spray_remaining, anv_spray_status->pressure, anv_spray_status->error);
+}
+
+/**
+ * @brief Encode a anv_spray_status struct with provided status structure
+ *
+ * @param system_id ID of this system
+ * @param component_id ID of this component (e.g. 200 for IMU)
+ * @param status MAVLink status structure
+ * @param msg The MAVLink message to compress the data into
+ * @param anv_spray_status C-struct to read the message contents from
+ */
+static inline uint16_t mavlink_msg_anv_spray_status_encode_status(uint8_t system_id, uint8_t component_id, mavlink_status_t* _status, mavlink_message_t* msg, const mavlink_anv_spray_status_t* anv_spray_status)
+{
+    return mavlink_msg_anv_spray_status_pack_status(system_id, component_id, _status, msg,  anv_spray_status->measured_flowrate, anv_spray_status->desired_flowrate, anv_spray_status->set_flowrate, anv_spray_status->total_sprayed_volume, anv_spray_status->armed_sprayed_volume, anv_spray_status->last_tree_volume, anv_spray_status->spray_remaining, anv_spray_status->pressure, anv_spray_status->error);
 }
 
 /**

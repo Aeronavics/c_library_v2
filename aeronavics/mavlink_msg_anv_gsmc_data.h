@@ -64,6 +64,39 @@ static inline uint16_t mavlink_msg_anv_gsmc_data_pack(uint8_t system_id, uint8_t
 }
 
 /**
+ * @brief Pack a anv_gsmc_data message
+ * @param system_id ID of this system
+ * @param component_id ID of this component (e.g. 200 for IMU)
+ * @param status MAVLink status structure
+ * @param msg The MAVLink message to compress the data into
+ *
+ * @param gsmc_ip  Ground Station IP
+ * @return length of the message in bytes (excluding serial stream start sign)
+ */
+static inline uint16_t mavlink_msg_anv_gsmc_data_pack_status(uint8_t system_id, uint8_t component_id, mavlink_status_t *_status, mavlink_message_t* msg,
+                               const char *gsmc_ip)
+{
+#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
+    char buf[MAVLINK_MSG_ID_ANV_GSMC_DATA_LEN];
+
+    _mav_put_char_array(buf, 0, gsmc_ip, 16);
+        memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_ANV_GSMC_DATA_LEN);
+#else
+    mavlink_anv_gsmc_data_t packet;
+
+    mav_array_memcpy(packet.gsmc_ip, gsmc_ip, sizeof(char)*16);
+        memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_ANV_GSMC_DATA_LEN);
+#endif
+
+    msg->msgid = MAVLINK_MSG_ID_ANV_GSMC_DATA;
+#if MAVLINK_CRC_EXTRA
+    return mavlink_finalize_message_buffer(msg, system_id, component_id, _status, MAVLINK_MSG_ID_ANV_GSMC_DATA_MIN_LEN, MAVLINK_MSG_ID_ANV_GSMC_DATA_LEN, MAVLINK_MSG_ID_ANV_GSMC_DATA_CRC);
+#else
+    return mavlink_finalize_message_buffer(msg, system_id, component_id, _status, MAVLINK_MSG_ID_ANV_GSMC_DATA_MIN_LEN, MAVLINK_MSG_ID_ANV_GSMC_DATA_LEN);
+#endif
+}
+
+/**
  * @brief Pack a anv_gsmc_data message on a channel
  * @param system_id ID of this system
  * @param component_id ID of this component (e.g. 200 for IMU)
@@ -117,6 +150,20 @@ static inline uint16_t mavlink_msg_anv_gsmc_data_encode(uint8_t system_id, uint8
 static inline uint16_t mavlink_msg_anv_gsmc_data_encode_chan(uint8_t system_id, uint8_t component_id, uint8_t chan, mavlink_message_t* msg, const mavlink_anv_gsmc_data_t* anv_gsmc_data)
 {
     return mavlink_msg_anv_gsmc_data_pack_chan(system_id, component_id, chan, msg, anv_gsmc_data->gsmc_ip);
+}
+
+/**
+ * @brief Encode a anv_gsmc_data struct with provided status structure
+ *
+ * @param system_id ID of this system
+ * @param component_id ID of this component (e.g. 200 for IMU)
+ * @param status MAVLink status structure
+ * @param msg The MAVLink message to compress the data into
+ * @param anv_gsmc_data C-struct to read the message contents from
+ */
+static inline uint16_t mavlink_msg_anv_gsmc_data_encode_status(uint8_t system_id, uint8_t component_id, mavlink_status_t* _status, mavlink_message_t* msg, const mavlink_anv_gsmc_data_t* anv_gsmc_data)
+{
+    return mavlink_msg_anv_gsmc_data_pack_status(system_id, component_id, _status, msg,  anv_gsmc_data->gsmc_ip);
 }
 
 /**

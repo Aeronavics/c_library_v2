@@ -70,6 +70,42 @@ static inline uint16_t mavlink_msg_anv_latency_report_pack(uint8_t system_id, ui
 }
 
 /**
+ * @brief Pack a anv_latency_report message
+ * @param system_id ID of this system
+ * @param component_id ID of this component (e.g. 200 for IMU)
+ * @param status MAVLink status structure
+ * @param msg The MAVLink message to compress the data into
+ *
+ * @param latency  The latency recorded by the host ping
+ * @param seq  The sequence ID of the ping request
+ * @return length of the message in bytes (excluding serial stream start sign)
+ */
+static inline uint16_t mavlink_msg_anv_latency_report_pack_status(uint8_t system_id, uint8_t component_id, mavlink_status_t *_status, mavlink_message_t* msg,
+                               uint64_t latency, uint32_t seq)
+{
+#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
+    char buf[MAVLINK_MSG_ID_ANV_LATENCY_REPORT_LEN];
+    _mav_put_uint64_t(buf, 0, latency);
+    _mav_put_uint32_t(buf, 8, seq);
+
+        memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_ANV_LATENCY_REPORT_LEN);
+#else
+    mavlink_anv_latency_report_t packet;
+    packet.latency = latency;
+    packet.seq = seq;
+
+        memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_ANV_LATENCY_REPORT_LEN);
+#endif
+
+    msg->msgid = MAVLINK_MSG_ID_ANV_LATENCY_REPORT;
+#if MAVLINK_CRC_EXTRA
+    return mavlink_finalize_message_buffer(msg, system_id, component_id, _status, MAVLINK_MSG_ID_ANV_LATENCY_REPORT_MIN_LEN, MAVLINK_MSG_ID_ANV_LATENCY_REPORT_LEN, MAVLINK_MSG_ID_ANV_LATENCY_REPORT_CRC);
+#else
+    return mavlink_finalize_message_buffer(msg, system_id, component_id, _status, MAVLINK_MSG_ID_ANV_LATENCY_REPORT_MIN_LEN, MAVLINK_MSG_ID_ANV_LATENCY_REPORT_LEN);
+#endif
+}
+
+/**
  * @brief Pack a anv_latency_report message on a channel
  * @param system_id ID of this system
  * @param component_id ID of this component (e.g. 200 for IMU)
@@ -126,6 +162,20 @@ static inline uint16_t mavlink_msg_anv_latency_report_encode(uint8_t system_id, 
 static inline uint16_t mavlink_msg_anv_latency_report_encode_chan(uint8_t system_id, uint8_t component_id, uint8_t chan, mavlink_message_t* msg, const mavlink_anv_latency_report_t* anv_latency_report)
 {
     return mavlink_msg_anv_latency_report_pack_chan(system_id, component_id, chan, msg, anv_latency_report->latency, anv_latency_report->seq);
+}
+
+/**
+ * @brief Encode a anv_latency_report struct with provided status structure
+ *
+ * @param system_id ID of this system
+ * @param component_id ID of this component (e.g. 200 for IMU)
+ * @param status MAVLink status structure
+ * @param msg The MAVLink message to compress the data into
+ * @param anv_latency_report C-struct to read the message contents from
+ */
+static inline uint16_t mavlink_msg_anv_latency_report_encode_status(uint8_t system_id, uint8_t component_id, mavlink_status_t* _status, mavlink_message_t* msg, const mavlink_anv_latency_report_t* anv_latency_report)
+{
+    return mavlink_msg_anv_latency_report_pack_status(system_id, component_id, _status, msg,  anv_latency_report->latency, anv_latency_report->seq);
 }
 
 /**

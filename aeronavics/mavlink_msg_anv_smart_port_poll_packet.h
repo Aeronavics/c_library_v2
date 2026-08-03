@@ -64,6 +64,39 @@ static inline uint16_t mavlink_msg_anv_smart_port_poll_packet_pack(uint8_t syste
 }
 
 /**
+ * @brief Pack a anv_smart_port_poll_packet message
+ * @param system_id ID of this system
+ * @param component_id ID of this component (e.g. 200 for IMU)
+ * @param status MAVLink status structure
+ * @param msg The MAVLink message to compress the data into
+ *
+ * @param smart_port_poll_packet  Smart port poll packet
+ * @return length of the message in bytes (excluding serial stream start sign)
+ */
+static inline uint16_t mavlink_msg_anv_smart_port_poll_packet_pack_status(uint8_t system_id, uint8_t component_id, mavlink_status_t *_status, mavlink_message_t* msg,
+                               const uint8_t *smart_port_poll_packet)
+{
+#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
+    char buf[MAVLINK_MSG_ID_ANV_SMART_PORT_POLL_PACKET_LEN];
+
+    _mav_put_uint8_t_array(buf, 0, smart_port_poll_packet, 2);
+        memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_ANV_SMART_PORT_POLL_PACKET_LEN);
+#else
+    mavlink_anv_smart_port_poll_packet_t packet;
+
+    mav_array_memcpy(packet.smart_port_poll_packet, smart_port_poll_packet, sizeof(uint8_t)*2);
+        memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_ANV_SMART_PORT_POLL_PACKET_LEN);
+#endif
+
+    msg->msgid = MAVLINK_MSG_ID_ANV_SMART_PORT_POLL_PACKET;
+#if MAVLINK_CRC_EXTRA
+    return mavlink_finalize_message_buffer(msg, system_id, component_id, _status, MAVLINK_MSG_ID_ANV_SMART_PORT_POLL_PACKET_MIN_LEN, MAVLINK_MSG_ID_ANV_SMART_PORT_POLL_PACKET_LEN, MAVLINK_MSG_ID_ANV_SMART_PORT_POLL_PACKET_CRC);
+#else
+    return mavlink_finalize_message_buffer(msg, system_id, component_id, _status, MAVLINK_MSG_ID_ANV_SMART_PORT_POLL_PACKET_MIN_LEN, MAVLINK_MSG_ID_ANV_SMART_PORT_POLL_PACKET_LEN);
+#endif
+}
+
+/**
  * @brief Pack a anv_smart_port_poll_packet message on a channel
  * @param system_id ID of this system
  * @param component_id ID of this component (e.g. 200 for IMU)
@@ -117,6 +150,20 @@ static inline uint16_t mavlink_msg_anv_smart_port_poll_packet_encode(uint8_t sys
 static inline uint16_t mavlink_msg_anv_smart_port_poll_packet_encode_chan(uint8_t system_id, uint8_t component_id, uint8_t chan, mavlink_message_t* msg, const mavlink_anv_smart_port_poll_packet_t* anv_smart_port_poll_packet)
 {
     return mavlink_msg_anv_smart_port_poll_packet_pack_chan(system_id, component_id, chan, msg, anv_smart_port_poll_packet->smart_port_poll_packet);
+}
+
+/**
+ * @brief Encode a anv_smart_port_poll_packet struct with provided status structure
+ *
+ * @param system_id ID of this system
+ * @param component_id ID of this component (e.g. 200 for IMU)
+ * @param status MAVLink status structure
+ * @param msg The MAVLink message to compress the data into
+ * @param anv_smart_port_poll_packet C-struct to read the message contents from
+ */
+static inline uint16_t mavlink_msg_anv_smart_port_poll_packet_encode_status(uint8_t system_id, uint8_t component_id, mavlink_status_t* _status, mavlink_message_t* msg, const mavlink_anv_smart_port_poll_packet_t* anv_smart_port_poll_packet)
+{
+    return mavlink_msg_anv_smart_port_poll_packet_pack_status(system_id, component_id, _status, msg,  anv_smart_port_poll_packet->smart_port_poll_packet);
 }
 
 /**

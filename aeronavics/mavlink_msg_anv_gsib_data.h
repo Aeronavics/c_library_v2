@@ -68,6 +68,40 @@ static inline uint16_t mavlink_msg_anv_gsib_data_pack(uint8_t system_id, uint8_t
 }
 
 /**
+ * @brief Pack a anv_gsib_data message
+ * @param system_id ID of this system
+ * @param component_id ID of this component (e.g. 200 for IMU)
+ * @param status MAVLink status structure
+ * @param msg The MAVLink message to compress the data into
+ *
+ * @param an_channel  Analog_channels.
+ * @param dig_channel  Bit mask of the Digital Switches' state
+ * @return length of the message in bytes (excluding serial stream start sign)
+ */
+static inline uint16_t mavlink_msg_anv_gsib_data_pack_status(uint8_t system_id, uint8_t component_id, mavlink_status_t *_status, mavlink_message_t* msg,
+                               const uint32_t *an_channel, uint32_t dig_channel)
+{
+#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
+    char buf[MAVLINK_MSG_ID_ANV_GSIB_DATA_LEN];
+    _mav_put_uint32_t(buf, 44, dig_channel);
+    _mav_put_uint32_t_array(buf, 0, an_channel, 11);
+        memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_ANV_GSIB_DATA_LEN);
+#else
+    mavlink_anv_gsib_data_t packet;
+    packet.dig_channel = dig_channel;
+    mav_array_memcpy(packet.an_channel, an_channel, sizeof(uint32_t)*11);
+        memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_ANV_GSIB_DATA_LEN);
+#endif
+
+    msg->msgid = MAVLINK_MSG_ID_ANV_GSIB_DATA;
+#if MAVLINK_CRC_EXTRA
+    return mavlink_finalize_message_buffer(msg, system_id, component_id, _status, MAVLINK_MSG_ID_ANV_GSIB_DATA_MIN_LEN, MAVLINK_MSG_ID_ANV_GSIB_DATA_LEN, MAVLINK_MSG_ID_ANV_GSIB_DATA_CRC);
+#else
+    return mavlink_finalize_message_buffer(msg, system_id, component_id, _status, MAVLINK_MSG_ID_ANV_GSIB_DATA_MIN_LEN, MAVLINK_MSG_ID_ANV_GSIB_DATA_LEN);
+#endif
+}
+
+/**
  * @brief Pack a anv_gsib_data message on a channel
  * @param system_id ID of this system
  * @param component_id ID of this component (e.g. 200 for IMU)
@@ -122,6 +156,20 @@ static inline uint16_t mavlink_msg_anv_gsib_data_encode(uint8_t system_id, uint8
 static inline uint16_t mavlink_msg_anv_gsib_data_encode_chan(uint8_t system_id, uint8_t component_id, uint8_t chan, mavlink_message_t* msg, const mavlink_anv_gsib_data_t* anv_gsib_data)
 {
     return mavlink_msg_anv_gsib_data_pack_chan(system_id, component_id, chan, msg, anv_gsib_data->an_channel, anv_gsib_data->dig_channel);
+}
+
+/**
+ * @brief Encode a anv_gsib_data struct with provided status structure
+ *
+ * @param system_id ID of this system
+ * @param component_id ID of this component (e.g. 200 for IMU)
+ * @param status MAVLink status structure
+ * @param msg The MAVLink message to compress the data into
+ * @param anv_gsib_data C-struct to read the message contents from
+ */
+static inline uint16_t mavlink_msg_anv_gsib_data_encode_status(uint8_t system_id, uint8_t component_id, mavlink_status_t* _status, mavlink_message_t* msg, const mavlink_anv_gsib_data_t* anv_gsib_data)
+{
+    return mavlink_msg_anv_gsib_data_pack_status(system_id, component_id, _status, msg,  anv_gsib_data->an_channel, anv_gsib_data->dig_channel);
 }
 
 /**

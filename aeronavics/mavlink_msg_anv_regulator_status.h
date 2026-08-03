@@ -94,6 +94,54 @@ static inline uint16_t mavlink_msg_anv_regulator_status_pack(uint8_t system_id, 
 }
 
 /**
+ * @brief Pack a anv_regulator_status message
+ * @param system_id ID of this system
+ * @param component_id ID of this component (e.g. 200 for IMU)
+ * @param status MAVLink status structure
+ * @param msg The MAVLink message to compress the data into
+ *
+ * @param id  ID of the regulator
+ * @param voltage  Voltage output of the regulator measured in mV
+ * @param current  Current output of the regulator measured in mA
+ * @param temperature  Temerature of the regulator measured in milli Degrees Celsius
+ * @param max_rated_current  The rated current of the regulator measured in mA
+ * @param consumed_power  The integral of used power of the regulator. Measured in mAH
+ * @return length of the message in bytes (excluding serial stream start sign)
+ */
+static inline uint16_t mavlink_msg_anv_regulator_status_pack_status(uint8_t system_id, uint8_t component_id, mavlink_status_t *_status, mavlink_message_t* msg,
+                               uint8_t id, uint16_t voltage, uint16_t current, uint16_t temperature, uint16_t max_rated_current, uint16_t consumed_power)
+{
+#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
+    char buf[MAVLINK_MSG_ID_ANV_REGULATOR_STATUS_LEN];
+    _mav_put_uint16_t(buf, 0, voltage);
+    _mav_put_uint16_t(buf, 2, current);
+    _mav_put_uint16_t(buf, 4, temperature);
+    _mav_put_uint16_t(buf, 6, max_rated_current);
+    _mav_put_uint16_t(buf, 8, consumed_power);
+    _mav_put_uint8_t(buf, 10, id);
+
+        memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_ANV_REGULATOR_STATUS_LEN);
+#else
+    mavlink_anv_regulator_status_t packet;
+    packet.voltage = voltage;
+    packet.current = current;
+    packet.temperature = temperature;
+    packet.max_rated_current = max_rated_current;
+    packet.consumed_power = consumed_power;
+    packet.id = id;
+
+        memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_ANV_REGULATOR_STATUS_LEN);
+#endif
+
+    msg->msgid = MAVLINK_MSG_ID_ANV_REGULATOR_STATUS;
+#if MAVLINK_CRC_EXTRA
+    return mavlink_finalize_message_buffer(msg, system_id, component_id, _status, MAVLINK_MSG_ID_ANV_REGULATOR_STATUS_MIN_LEN, MAVLINK_MSG_ID_ANV_REGULATOR_STATUS_LEN, MAVLINK_MSG_ID_ANV_REGULATOR_STATUS_CRC);
+#else
+    return mavlink_finalize_message_buffer(msg, system_id, component_id, _status, MAVLINK_MSG_ID_ANV_REGULATOR_STATUS_MIN_LEN, MAVLINK_MSG_ID_ANV_REGULATOR_STATUS_LEN);
+#endif
+}
+
+/**
  * @brief Pack a anv_regulator_status message on a channel
  * @param system_id ID of this system
  * @param component_id ID of this component (e.g. 200 for IMU)
@@ -162,6 +210,20 @@ static inline uint16_t mavlink_msg_anv_regulator_status_encode(uint8_t system_id
 static inline uint16_t mavlink_msg_anv_regulator_status_encode_chan(uint8_t system_id, uint8_t component_id, uint8_t chan, mavlink_message_t* msg, const mavlink_anv_regulator_status_t* anv_regulator_status)
 {
     return mavlink_msg_anv_regulator_status_pack_chan(system_id, component_id, chan, msg, anv_regulator_status->id, anv_regulator_status->voltage, anv_regulator_status->current, anv_regulator_status->temperature, anv_regulator_status->max_rated_current, anv_regulator_status->consumed_power);
+}
+
+/**
+ * @brief Encode a anv_regulator_status struct with provided status structure
+ *
+ * @param system_id ID of this system
+ * @param component_id ID of this component (e.g. 200 for IMU)
+ * @param status MAVLink status structure
+ * @param msg The MAVLink message to compress the data into
+ * @param anv_regulator_status C-struct to read the message contents from
+ */
+static inline uint16_t mavlink_msg_anv_regulator_status_encode_status(uint8_t system_id, uint8_t component_id, mavlink_status_t* _status, mavlink_message_t* msg, const mavlink_anv_regulator_status_t* anv_regulator_status)
+{
+    return mavlink_msg_anv_regulator_status_pack_status(system_id, component_id, _status, msg,  anv_regulator_status->id, anv_regulator_status->voltage, anv_regulator_status->current, anv_regulator_status->temperature, anv_regulator_status->max_rated_current, anv_regulator_status->consumed_power);
 }
 
 /**

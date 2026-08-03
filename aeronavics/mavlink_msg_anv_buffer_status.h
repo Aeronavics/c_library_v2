@@ -88,6 +88,51 @@ static inline uint16_t mavlink_msg_anv_buffer_status_pack(uint8_t system_id, uin
 }
 
 /**
+ * @brief Pack a anv_buffer_status message
+ * @param system_id ID of this system
+ * @param component_id ID of this component (e.g. 200 for IMU)
+ * @param status MAVLink status structure
+ * @param msg The MAVLink message to compress the data into
+ *
+ * @param id  ID of the buffer
+ * @param buffer_type  Buffer type
+ * @param min_space  
+ * @param max_space  Temerature of the regulator measured in milli Degrees Celsius
+ * @param avg_space  The rated current of the regulator measured in mA
+ * @return length of the message in bytes (excluding serial stream start sign)
+ */
+static inline uint16_t mavlink_msg_anv_buffer_status_pack_status(uint8_t system_id, uint8_t component_id, mavlink_status_t *_status, mavlink_message_t* msg,
+                               uint8_t id, uint16_t buffer_type, uint16_t min_space, uint16_t max_space, uint16_t avg_space)
+{
+#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
+    char buf[MAVLINK_MSG_ID_ANV_BUFFER_STATUS_LEN];
+    _mav_put_uint16_t(buf, 0, buffer_type);
+    _mav_put_uint16_t(buf, 2, min_space);
+    _mav_put_uint16_t(buf, 4, max_space);
+    _mav_put_uint16_t(buf, 6, avg_space);
+    _mav_put_uint8_t(buf, 8, id);
+
+        memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_ANV_BUFFER_STATUS_LEN);
+#else
+    mavlink_anv_buffer_status_t packet;
+    packet.buffer_type = buffer_type;
+    packet.min_space = min_space;
+    packet.max_space = max_space;
+    packet.avg_space = avg_space;
+    packet.id = id;
+
+        memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_ANV_BUFFER_STATUS_LEN);
+#endif
+
+    msg->msgid = MAVLINK_MSG_ID_ANV_BUFFER_STATUS;
+#if MAVLINK_CRC_EXTRA
+    return mavlink_finalize_message_buffer(msg, system_id, component_id, _status, MAVLINK_MSG_ID_ANV_BUFFER_STATUS_MIN_LEN, MAVLINK_MSG_ID_ANV_BUFFER_STATUS_LEN, MAVLINK_MSG_ID_ANV_BUFFER_STATUS_CRC);
+#else
+    return mavlink_finalize_message_buffer(msg, system_id, component_id, _status, MAVLINK_MSG_ID_ANV_BUFFER_STATUS_MIN_LEN, MAVLINK_MSG_ID_ANV_BUFFER_STATUS_LEN);
+#endif
+}
+
+/**
  * @brief Pack a anv_buffer_status message on a channel
  * @param system_id ID of this system
  * @param component_id ID of this component (e.g. 200 for IMU)
@@ -153,6 +198,20 @@ static inline uint16_t mavlink_msg_anv_buffer_status_encode(uint8_t system_id, u
 static inline uint16_t mavlink_msg_anv_buffer_status_encode_chan(uint8_t system_id, uint8_t component_id, uint8_t chan, mavlink_message_t* msg, const mavlink_anv_buffer_status_t* anv_buffer_status)
 {
     return mavlink_msg_anv_buffer_status_pack_chan(system_id, component_id, chan, msg, anv_buffer_status->id, anv_buffer_status->buffer_type, anv_buffer_status->min_space, anv_buffer_status->max_space, anv_buffer_status->avg_space);
+}
+
+/**
+ * @brief Encode a anv_buffer_status struct with provided status structure
+ *
+ * @param system_id ID of this system
+ * @param component_id ID of this component (e.g. 200 for IMU)
+ * @param status MAVLink status structure
+ * @param msg The MAVLink message to compress the data into
+ * @param anv_buffer_status C-struct to read the message contents from
+ */
+static inline uint16_t mavlink_msg_anv_buffer_status_encode_status(uint8_t system_id, uint8_t component_id, mavlink_status_t* _status, mavlink_message_t* msg, const mavlink_anv_buffer_status_t* anv_buffer_status)
+{
+    return mavlink_msg_anv_buffer_status_pack_status(system_id, component_id, _status, msg,  anv_buffer_status->id, anv_buffer_status->buffer_type, anv_buffer_status->min_space, anv_buffer_status->max_space, anv_buffer_status->avg_space);
 }
 
 /**

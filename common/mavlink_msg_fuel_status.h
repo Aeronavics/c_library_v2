@@ -106,6 +106,60 @@ static inline uint16_t mavlink_msg_fuel_status_pack(uint8_t system_id, uint8_t c
 }
 
 /**
+ * @brief Pack a fuel_status message
+ * @param system_id ID of this system
+ * @param component_id ID of this component (e.g. 200 for IMU)
+ * @param status MAVLink status structure
+ * @param msg The MAVLink message to compress the data into
+ *
+ * @param id  Fuel ID. Must match ID of other messages for same fuel system, such as BATTERY_STATUS_V2.
+ * @param maximum_fuel  Capacity when full. Must be provided.
+ * @param consumed_fuel  Consumed fuel (measured). This value should not be inferred: if not measured set to NaN. NaN: field not provided.
+ * @param remaining_fuel  Remaining fuel until empty (measured). The value should not be inferred: if not measured set to NaN. NaN: field not provided.
+ * @param percent_remaining [%] Percentage of remaining fuel, relative to full. Values: [0-100], UINT8_MAX: field not provided.
+ * @param flow_rate  Positive value when emptying/using, and negative if filling/replacing. NaN: field not provided.
+ * @param temperature [K] Fuel temperature. NaN: field not provided.
+ * @param fuel_type  Fuel type. Defines units for fuel capacity and consumption fields above.
+ * @return length of the message in bytes (excluding serial stream start sign)
+ */
+static inline uint16_t mavlink_msg_fuel_status_pack_status(uint8_t system_id, uint8_t component_id, mavlink_status_t *_status, mavlink_message_t* msg,
+                               uint8_t id, float maximum_fuel, float consumed_fuel, float remaining_fuel, uint8_t percent_remaining, float flow_rate, float temperature, uint32_t fuel_type)
+{
+#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
+    char buf[MAVLINK_MSG_ID_FUEL_STATUS_LEN];
+    _mav_put_float(buf, 0, maximum_fuel);
+    _mav_put_float(buf, 4, consumed_fuel);
+    _mav_put_float(buf, 8, remaining_fuel);
+    _mav_put_float(buf, 12, flow_rate);
+    _mav_put_float(buf, 16, temperature);
+    _mav_put_uint32_t(buf, 20, fuel_type);
+    _mav_put_uint8_t(buf, 24, id);
+    _mav_put_uint8_t(buf, 25, percent_remaining);
+
+        memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_FUEL_STATUS_LEN);
+#else
+    mavlink_fuel_status_t packet;
+    packet.maximum_fuel = maximum_fuel;
+    packet.consumed_fuel = consumed_fuel;
+    packet.remaining_fuel = remaining_fuel;
+    packet.flow_rate = flow_rate;
+    packet.temperature = temperature;
+    packet.fuel_type = fuel_type;
+    packet.id = id;
+    packet.percent_remaining = percent_remaining;
+
+        memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_FUEL_STATUS_LEN);
+#endif
+
+    msg->msgid = MAVLINK_MSG_ID_FUEL_STATUS;
+#if MAVLINK_CRC_EXTRA
+    return mavlink_finalize_message_buffer(msg, system_id, component_id, _status, MAVLINK_MSG_ID_FUEL_STATUS_MIN_LEN, MAVLINK_MSG_ID_FUEL_STATUS_LEN, MAVLINK_MSG_ID_FUEL_STATUS_CRC);
+#else
+    return mavlink_finalize_message_buffer(msg, system_id, component_id, _status, MAVLINK_MSG_ID_FUEL_STATUS_MIN_LEN, MAVLINK_MSG_ID_FUEL_STATUS_LEN);
+#endif
+}
+
+/**
  * @brief Pack a fuel_status message on a channel
  * @param system_id ID of this system
  * @param component_id ID of this component (e.g. 200 for IMU)
@@ -180,6 +234,20 @@ static inline uint16_t mavlink_msg_fuel_status_encode(uint8_t system_id, uint8_t
 static inline uint16_t mavlink_msg_fuel_status_encode_chan(uint8_t system_id, uint8_t component_id, uint8_t chan, mavlink_message_t* msg, const mavlink_fuel_status_t* fuel_status)
 {
     return mavlink_msg_fuel_status_pack_chan(system_id, component_id, chan, msg, fuel_status->id, fuel_status->maximum_fuel, fuel_status->consumed_fuel, fuel_status->remaining_fuel, fuel_status->percent_remaining, fuel_status->flow_rate, fuel_status->temperature, fuel_status->fuel_type);
+}
+
+/**
+ * @brief Encode a fuel_status struct with provided status structure
+ *
+ * @param system_id ID of this system
+ * @param component_id ID of this component (e.g. 200 for IMU)
+ * @param status MAVLink status structure
+ * @param msg The MAVLink message to compress the data into
+ * @param fuel_status C-struct to read the message contents from
+ */
+static inline uint16_t mavlink_msg_fuel_status_encode_status(uint8_t system_id, uint8_t component_id, mavlink_status_t* _status, mavlink_message_t* msg, const mavlink_fuel_status_t* fuel_status)
+{
+    return mavlink_msg_fuel_status_pack_status(system_id, component_id, _status, msg,  fuel_status->id, fuel_status->maximum_fuel, fuel_status->consumed_fuel, fuel_status->remaining_fuel, fuel_status->percent_remaining, fuel_status->flow_rate, fuel_status->temperature, fuel_status->fuel_type);
 }
 
 /**
